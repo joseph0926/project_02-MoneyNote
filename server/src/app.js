@@ -2,10 +2,10 @@ import * as dotenv from "dotenv";
 dotenv.config();
 import express from "express";
 import helmet from "helmet";
-import xss from "xss";
 import { rateLimit as rateLimiter } from "express-rate-limit";
 
 import connectDB from "./db/connect.js";
+import { router as authRouter } from "./routes/auth.js";
 
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
@@ -21,11 +21,11 @@ app.use(
   })
 );
 app.use(helmet());
-app.use(xss);
 
 app.use(express.json());
 
 // router
+app.use("/api/v1/auth", authRouter);
 
 // error handler
 app.use(notFoundMiddleware);

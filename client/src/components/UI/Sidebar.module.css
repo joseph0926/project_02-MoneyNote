@@ -18,8 +18,7 @@
 }
 
 .stats,
-.money,
-.side {
+.money {
   margin-top: 2.5rem;
   margin-left: 0.5rem;
   padding-bottom: 1.25rem;
@@ -44,7 +43,6 @@
 .menu:nth-child(1):hover,
 .menu:nth-child(2):hover {
   margin-left: 1rem;
-  color: var(--color-dark-pri);
 }
 
 .menu {
@@ -57,4 +55,12 @@
 }
 .menu svg {
   font-size: 1.25rem;
+  color: var(--color-gray);
+  margin-left: 0.6rem;
+}
+
+.side {
+  margin-top: 2.5rem;
+  margin-left: 0.5rem;
+  padding-bottom: 1.25rem;
 }
