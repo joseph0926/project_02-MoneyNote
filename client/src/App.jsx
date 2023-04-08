@@ -7,7 +7,7 @@ import MoneyPage from "./pages/MoneyPage";
 import MoneyDetailPage from "./pages/MoneyDetailPage";
 import AddMoneyPage from "./pages/AddMoneyPage";
 import ErrorPage from "./pages/ErrorPage";
-import MyPage from "./pages/MyPage";
+import SettingPage from "./pages/SettingPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -26,7 +26,7 @@ const App = () => {
             { path: "add-money", element: <AddMoneyPage /> },
           ],
         },
-        { path: "mypage", element: <MyPage /> },
+        { path: "setting", element: <SettingPage /> },
       ],
     },
   ]);
