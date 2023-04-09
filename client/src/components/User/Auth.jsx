@@ -7,11 +7,14 @@ import styled from "styled-components";
 
 const Auth = () => {
   const [formBoxActvie, setFormBoxActvie] = useState(false);
+  const [isSign, setIsSign] = useState(true);
   const activeHandler = () => {
     setFormBoxActvie(true);
+    setIsSign(false);
   };
   const inactiveHandler = () => {
     setFormBoxActvie(false);
+    setIsSign(true);
   };
 
   return (
@@ -19,25 +22,21 @@ const Auth = () => {
       <div className="sign-content">
         <div className="sign-header">
           <h2>이미 회원이시라면, 로그인해주세요!</h2>
-          <Link
-            to="?mode=signInWithPassword"
-            className="sign-btn"
-            onClick={inactiveHandler}
-          >
+          <button className="sign-btn" onClick={inactiveHandler}>
             로그인
-          </Link>
+          </button>
         </div>
         <div className="sign-header">
           <h2>회원이 아니신가요? 회원가입해주세요!</h2>
-          <Link to="?mode=signUp" className="sign-btn" onClick={activeHandler}>
+          <button className="sign-btn" onClick={activeHandler}>
             회원가입
-          </Link>
+          </button>
         </div>
       </div>
       <div
         className={`${formBoxActvie ? "sign-formBox active" : "sign-formBox"}`}
       >
-        <AuthForm />
+        <AuthForm isSign={isSign} />
       </div>
     </Wrapper>
   );

@@ -4,7 +4,7 @@ import {
   getUserFromLocalStorage,
   addUserToLocalStorage,
   removeUserFromLocalStorage,
-} from "../../Helpers/localStorage";
+} from "../../components/Helpers/localStorage";
 
 const url = "http://localhost:5000/api/v1";
 

@@ -101,6 +101,11 @@ ul {
 .btn-block {
   height: 35px;
 }
+.form-input.invalid {
+  background: var(--color-red);
+  color: var(--color-red);
+}
+
 .form-row {
   margin-bottom: 1rem;
 }

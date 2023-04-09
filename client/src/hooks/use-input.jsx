@@ -19,6 +19,7 @@ const useInput = (initialState) => {
 
   return {
     values: enteredValue,
+    isTouched: enteredValueTouched,
     valueChangeHandler: valueChangeHandler,
     valueInputBlurHandler: valueInputBlurHandler,
     reset: reset,
