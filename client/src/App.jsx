@@ -1,5 +1,8 @@
 import React from "react";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+
 import Root from "./pages/Root";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
@@ -17,7 +20,6 @@ const App = () => {
       errorElement: <ErrorPage />,
       children: [
         { index: true, element: <HomePage /> },
-        { path: "auth", element: <AuthPage /> },
         {
           path: "money",
           element: <MoneyPage />,
@@ -29,9 +31,15 @@ const App = () => {
         { path: "setting", element: <SettingPage /> },
       ],
     },
+    { path: "/auth", element: <AuthPage /> },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <>
+      <ToastContainer position="top-center" />
+      <RouterProvider router={router} />
+    </>
+  );
 };
 
 export default App;
