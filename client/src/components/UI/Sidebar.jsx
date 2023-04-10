@@ -1,8 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { useDispatch, useSelector } from "react-redux";
 
-import { FiUser, FiSettings } from "react-icons/fi";
+import { FiUserPlus, FiUserMinus, FiSettings } from "react-icons/fi";
 import styled from "styled-components";
+import { logout } from "../../store/user/user-slice";
 
 const moneyMenu = [
   { name: "All Money", route: "/money" },
@@ -10,10 +12,13 @@ const moneyMenu = [
 ];
 const sideMenu = [
   { name: "Setting", route: "/setting", icon: <FiSettings /> },
-  { name: "Login", route: "/auth", icon: <FiUser /> },
+  { name: "Logout", route: "/", icon: <FiUserMinus /> },
 ];
 
 const Sidebar = () => {
+  const dispatchFn = useDispatch();
+  const { isLoggedIn } = useSelector((state) => state.user);
+
   return (
     <Wrapper>
       <div className="logo">
@@ -38,14 +43,24 @@ const Sidebar = () => {
       <div className="side">
         <h4>Set</h4>
         <ul>
-          {sideMenu.map((menu) => {
-            return (
-              <li className="menu" key={menu.name}>
-                {menu.icon}
-                <Link to={menu.route}>{menu.name}</Link>
-              </li>
-            );
-          })}
+          {isLoggedIn && (
+            <li className="menu">
+              <FiSettings />
+              <Link to="/auth">Setting</Link>
+            </li>
+          )}
+          {!isLoggedIn && (
+            <li className="menu">
+              <FiUserPlus />
+              <Link to="/auth">Login</Link>
+            </li>
+          )}
+          {isLoggedIn && (
+            <li className="menu" onClick={() => dispatchFn(logout("로그아웃 되셨습니다."))}>
+              <FiUserMinus />
+              <Link to="/">Logout</Link>
+            </li>
+          )}
         </ul>
       </div>
     </Wrapper>
@@ -57,8 +72,7 @@ const Wrapper = styled.div`
   width: 250px;
   padding-left: 1rem;
   padding-bottom: 2.5rem;
-  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1),
-    0 4px 6px -2px rgba(0, 0, 0, 0.05);
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1), 0 4px 6px -2px rgba(0, 0, 0, 0.05);
 
   .logo {
     display: flex;

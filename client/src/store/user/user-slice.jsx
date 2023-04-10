@@ -1,41 +1,35 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import {
-  getUserFromLocalStorage,
-  addUserToLocalStorage,
-  removeUserFromLocalStorage,
-} from "../../components/Helpers/localStorage";
+import { getUserFromLocalStorage, addUserToLocalStorage, removeUserFromLocalStorage } from "../../components/Helpers/localStorage";
 
 const url = "http://localhost:5000/api/v1";
 
 const initialState = {
   isLoading: false,
+  isLoggedIn: false,
   user: getUserFromLocalStorage(),
 };
 
-export const signup = createAsyncThunk(
-  "user/signup",
-  async (user, thunkAPI) => {
-    console.log(user);
-    try {
-      const response = await fetch(`${url}/auth/signup`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(user),
-      });
-      const data = await response.json();
+export const signup = createAsyncThunk("user/signup", async (user, thunkAPI) => {
+  console.log(user);
+  try {
+    const response = await fetch(`${url}/auth/signup`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(user),
+    });
+    const data = await response.json();
 
-      if (!response.ok) {
-        throw data;
-      }
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.msg);
+    if (!response.ok) {
+      throw data;
     }
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.msg);
   }
-);
+});
 export const login = createAsyncThunk("user/login", async (user, thunkAPI) => {
   try {
     const response = await fetch(`${url}/auth/login`, {
@@ -59,6 +53,16 @@ export const login = createAsyncThunk("user/login", async (user, thunkAPI) => {
 const userSlice = createSlice({
   name: "user",
   initialState,
+  reducers: {
+    logout: (state, { payload }) => {
+      state.user = null;
+      state.isLoggedIn = false;
+      removeUserFromLocalStorage();
+      if (payload) {
+        toast.success(payload);
+      }
+    },
+  },
   extraReducers: (builder) => {
     builder
       .addCase(signup.pending, (state) => {
@@ -85,7 +89,7 @@ const userSlice = createSlice({
         state.isLoading = false;
         state.user = user;
         addUserToLocalStorage(user);
-
+        state.isLoggedIn = true;
         toast.success(`안녕하세요! ${user.name}님`);
       })
       .addCase(login.rejected, (state, { payload }) => {
@@ -94,5 +98,7 @@ const userSlice = createSlice({
       });
   },
 });
+
+export const { logout } = userSlice.actions;
 
 export default userSlice.reducer;
