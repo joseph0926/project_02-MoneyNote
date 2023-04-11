@@ -3,7 +3,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 
-import Root from "./pages/Root";
+import Root, { loader as protectRouteLoader } from "./pages/Root";
 import HomePage from "./pages/HomePage";
 import AuthPage from "./pages/AuthPage";
 import MoneyPage from "./pages/MoneyPage";
@@ -28,7 +28,7 @@ const App = () => {
             { path: "add-money", element: <AddMoneyPage /> },
           ],
         },
-        { path: "setting", element: <SettingPage /> },
+        { path: "setting", element: <SettingPage />, loader: protectRouteLoader },
       ],
     },
     { path: "/auth", element: <AuthPage /> },
@@ -36,7 +36,7 @@ const App = () => {
 
   return (
     <>
-      <ToastContainer position="top-center" />
+      <ToastContainer position="top-center" style={{ width: "auto" }} />
       <RouterProvider router={router} />
     </>
   );
