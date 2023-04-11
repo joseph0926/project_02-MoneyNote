@@ -24,7 +24,7 @@ const Root = () => {
 export async function loader() {
   const token = await getUserFromLocalStorage();
   if (!token) {
-    return redirect("/");
+    return redirect("/land");
   }
   return null;
 }

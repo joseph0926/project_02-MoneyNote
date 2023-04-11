@@ -11,6 +11,7 @@ import MoneyDetailPage from "./pages/MoneyDetailPage";
 import AddMoneyPage from "./pages/AddMoneyPage";
 import ErrorPage from "./pages/ErrorPage";
 import SettingPage from "./pages/SettingPage";
+import StatsPage from "./pages/StatsPage";
 
 const App = () => {
   const router = createBrowserRouter([
@@ -18,8 +19,9 @@ const App = () => {
       path: "/",
       element: <Root />,
       errorElement: <ErrorPage />,
+      loader: protectRouteLoader,
       children: [
-        { index: true, element: <HomePage /> },
+        { index: true, element: <StatsPage /> },
         {
           path: "money",
           element: <MoneyPage />,
@@ -28,10 +30,11 @@ const App = () => {
             { path: "add-money", element: <AddMoneyPage /> },
           ],
         },
-        { path: "setting", element: <SettingPage />, loader: protectRouteLoader },
+        { path: "setting", element: <SettingPage /> },
       ],
     },
     { path: "/auth", element: <AuthPage /> },
+    { path: "/land", element: <HomePage /> },
   ]);
 
   return (
