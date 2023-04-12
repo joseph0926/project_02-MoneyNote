@@ -7,20 +7,17 @@ import { FiMenu, FiMoon, FiSun, FiUserMinus, FiUserPlus } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 import styled from "styled-components";
 import { logout } from "../../store/user/user-slice";
+import { getUserFromLocalStorage } from "../Helpers/localStorage";
 
 const Navbar = () => {
   const dispatchFn = useDispatch();
   const { isSidebarOpen, isLight } = useSelector((state) => state.ui);
-  const { isLoggedIn } = useSelector((state) => state.user);
+  const token = getUserFromLocalStorage();
 
   return (
     <Wrapper>
       <div className="container">
-        <button
-          type="button"
-          className="toggle-btn"
-          onClick={() => dispatchFn(toggleSidebar())}
-        >
+        <button type="button" className="toggle-btn" onClick={() => dispatchFn(toggleSidebar())}>
           {!isSidebarOpen && <FiMenu />}
           {isSidebarOpen && <AiOutlineClose />}
         </button>
@@ -30,18 +27,13 @@ const Navbar = () => {
         </div>
         <div className="btn-container">
           <div className="sign-btn">
-            {!isLoggedIn && (
+            {!token && (
               <Link to="auth">
                 <FiUserPlus />
               </Link>
             )}
-            {isLoggedIn && (
-              <Link
-                to="/"
-                onClick={() =>
-                  dispatchFn(logout("성공적으로 로그아웃 되셨습니다."))
-                }
-              >
+            {token && (
+              <Link to="/" onClick={() => dispatchFn(logout("성공적으로 로그아웃 되셨습니다."))}>
                 <FiUserMinus />
               </Link>
             )}
@@ -67,6 +59,7 @@ const Wrapper = styled.nav`
     width: 90vw;
     justify-content: space-between;
     align-items: center;
+    padding-left: 10rem;
   }
   .toggle-btn {
     font-size: 1.5rem;

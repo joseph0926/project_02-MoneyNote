@@ -22,6 +22,7 @@ const App = () => {
       loader: protectRouteLoader,
       children: [
         { index: true, element: <StatsPage /> },
+        { path: "setting", element: <SettingPage /> },
         {
           path: "money",
           element: <MoneyPage />,
@@ -30,7 +31,6 @@ const App = () => {
             { path: "add-money", element: <AddMoneyPage /> },
           ],
         },
-        { path: "setting", element: <SettingPage /> },
       ],
     },
     { path: "/auth", element: <AuthPage /> },

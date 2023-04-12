@@ -7,6 +7,7 @@ import Sidebar from "../components/UI/Sidebar";
 import { GlobalStyles, lightTheme, darkTheme } from "../helpers/ThemeConfig";
 import Navbar from "../components/UI/Navbar";
 import { getUserFromLocalStorage } from "../components/Helpers/localStorage";
+import styled from "styled-components";
 
 const Root = () => {
   const { theme } = useSelector((state) => state.ui);
@@ -14,9 +15,15 @@ const Root = () => {
   return (
     <ThemeProvider theme={theme === "light" ? lightTheme : darkTheme}>
       <GlobalStyles />
-      <Navbar />
-      <Sidebar />
-      <Outlet />
+      <Wrapper>
+        <main className="sidebar">
+          <Sidebar />
+        </main>
+        <Navbar />
+        <div className="main">
+          <Outlet />
+        </div>
+      </Wrapper>
     </ThemeProvider>
   );
 };
@@ -28,5 +35,17 @@ export async function loader() {
   }
   return null;
 }
+
+const Wrapper = styled.section`
+  .sidebar {
+    position: absolute;
+    top: 5rem;
+  }
+  .main {
+    width: calc(100vw - 250px);
+    position: absolute;
+    left: 250px;
+  }
+`;
 
 export default Root;

@@ -1,7 +1,8 @@
 import React from "react";
+import EditProfile from "../components/User/EditProfile";
 
 const SettingPage = () => {
-  return <div>SettingPage</div>;
+  return <EditProfile />;
 };
 
 export default SettingPage;

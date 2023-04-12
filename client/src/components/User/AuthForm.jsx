@@ -12,21 +12,28 @@ const initialState = {
   name: "",
   email: "",
   password: "",
+  goal: "",
+  description: "",
 };
 
 const AuthForm = ({ isSign }) => {
   const dispatchFn = useDispatch();
   const { user, isLoading } = useSelector((state) => state.user);
 
+  const [showExtra, setShowExtra] = useState(false);
+
   const navigate = useNavigate();
 
-  const { values, valueChangeHandler, valueInputBlurHandler, reset } =
-    useInput(initialState);
+  const { values, valueChangeHandler, valueInputBlurHandler, reset } = useInput(initialState);
+
+  const showExtraHandler = () => {
+    setShowExtra(!showExtra);
+  };
 
   const submitHandler = (e) => {
     e.preventDefault();
 
-    const { email, password, name } = values;
+    const { email, password, name, goal, description } = values;
     if (!email || !password || (!isSign && !name)) {
       toast.error("입력값이 유효하지 않습니다. 다시 입력해주세요.");
       return;
@@ -36,16 +43,15 @@ const AuthForm = ({ isSign }) => {
       dispatchFn(login({ email, password }));
       return;
     }
-    dispatchFn(signup({ name, email, password }));
+    dispatchFn(signup({ name, email, password, goal, description }));
 
     // reset();
   };
 
   useEffect(() => {
     if (user) {
-      setTimeout(() => {
-        navigate("/");
-      }, 2000);
+      navigate("/");
+      // toast.warn("이미 로그인중입니다.");
     }
   }, [user]);
 
@@ -55,21 +61,9 @@ const AuthForm = ({ isSign }) => {
         <h3>{isSign ? "로그인" : "회원가입"}</h3>
 
         {!isSign && (
-          <InputHelper
-            type="text"
-            name="name"
-            value={values.name}
-            handleChange={valueChangeHandler}
-            handleBluer={valueInputBlurHandler}
-          />
+          <InputHelper type="text" name="name" value={values.name} handleChange={valueChangeHandler} handleBluer={valueInputBlurHandler} />
         )}
-        <InputHelper
-          type="email"
-          name="email"
-          value={values.email}
-          handleChange={valueChangeHandler}
-          handleBluer={valueInputBlurHandler}
-        />
+        <InputHelper type="email" name="email" value={values.email} handleChange={valueChangeHandler} handleBluer={valueInputBlurHandler} />
         <InputHelper
           type="password"
           name="password"
@@ -77,6 +71,16 @@ const AuthForm = ({ isSign }) => {
           handleChange={valueChangeHandler}
           handleBluer={valueInputBlurHandler}
         />
+        {!isSign && (
+          <button type="button" className="btn btn-extra" onClick={showExtraHandler}>
+            추가 정보 입력하기
+          </button>
+        )}
+
+        {!isSign && showExtra && <InputHelper type="text" name="goal" value={values.goal} handleChange={valueChangeHandler} />}
+        {!isSign && showExtra && (
+          <InputHelper type="text" name="description" value={values.description} handleChange={valueChangeHandler} />
+        )}
 
         <button type="submit" className="btn btn-block" disabled={isLoading}>
           {isLoading ? "loading,,," : "submit"}
@@ -99,6 +103,11 @@ const Wrapper = styled.section`
   }
   .btn {
     margin-top: 1rem;
+  }
+  .btn-extra {
+    margin-left: 10rem;
+    margin-bottom: 1rem;
+    background: var(--color-blue-op);
   }
 `;
 

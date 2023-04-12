@@ -1,5 +1,4 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
 
 import AuthForm from "./AuthForm";
 
@@ -33,9 +32,7 @@ const Auth = () => {
           </button>
         </div>
       </div>
-      <div
-        className={`${formBoxActvie ? "sign-formBox active" : "sign-formBox"}`}
-      >
+      <div className={`${formBoxActvie ? "sign-formBox active" : "sign-formBox"}`}>
         <AuthForm isSign={isSign} />
       </div>
     </Wrapper>
@@ -94,7 +91,8 @@ const Wrapper = styled.div`
     top: 0;
     left: 0;
     width: 50%;
-    height: 100%;
+    min-height: 100%;
+    padding: 2rem;
     background: var(--color-dark);
     color: var(--color-white);
     z-index: 10;

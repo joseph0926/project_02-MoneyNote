@@ -20,10 +20,10 @@ const Sidebar = () => {
 const Wrapper = styled.aside`
   display: none;
   @media (min-width: 992px) {
+    position: fixed;
     display: block;
     .sidebar-container {
       min-height: 100vh;
-      height: 100%;
       width: 250px;
       margin-left: -250px;
       box-shadow: 0px 3px 7px;
@@ -52,9 +52,9 @@ const Wrapper = styled.aside`
       transition: all 0.5s;
     }
     .nav-link:hover {
-      background: var(--color-blue);
+      /* background: var(--color-blue); */
       padding-left: 3rem;
-      color: var(--color-white);
+      /* color: var(--color-white); */
     }
     .nav-link:hover .icon {
       color: var(--color-blue);
@@ -67,6 +67,9 @@ const Wrapper = styled.aside`
       transition: all 0.5s;
     }
     .active {
+      color: var(--color-blue);
+    }
+    .active .icon svg {
       color: var(--color-blue);
     }
   }
