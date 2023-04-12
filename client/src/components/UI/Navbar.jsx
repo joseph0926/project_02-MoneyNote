@@ -16,7 +16,11 @@ const Navbar = () => {
   return (
     <Wrapper>
       <div className="container">
-        <button type="button" className="toggle-btn" onClick={() => dispatchFn(toggleSidebar())}>
+        <button
+          type="button"
+          className="toggle-btn"
+          onClick={() => dispatchFn(toggleSidebar())}
+        >
           {!isSidebarOpen && <FiMenu />}
           {isSidebarOpen && <AiOutlineClose />}
         </button>
@@ -32,7 +36,12 @@ const Navbar = () => {
               </Link>
             )}
             {isLoggedIn && (
-              <Link to="/" onClick={() => dispatchFn(logout("성공적으로 로그아웃 되셨습니다."))}>
+              <Link
+                to="/"
+                onClick={() =>
+                  dispatchFn(logout("성공적으로 로그아웃 되셨습니다."))
+                }
+              >
                 <FiUserMinus />
               </Link>
             )}

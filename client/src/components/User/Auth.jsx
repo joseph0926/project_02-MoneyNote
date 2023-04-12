@@ -95,7 +95,8 @@ const Wrapper = styled.div`
     left: 0;
     width: 50%;
     height: 100%;
-    background: var(--color-blue-light);
+    background: var(--color-dark);
+    color: var(--color-white);
     z-index: 10;
     display: flex;
     align-items: center;
