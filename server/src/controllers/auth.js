@@ -1,5 +1,9 @@
 import User from "../models/User.js";
-import { comparePassword, createJwt, hashPassword } from "../middleware/authMiddleware.js";
+import {
+  comparePassword,
+  createJwt,
+  hashPassword,
+} from "../middleware/authMiddleware.js";
 import { StatusCodes } from "http-status-codes";
 import BadRequestError from "../errors/bad-request.js";
 import UnauthenticatedError from "../errors/un-auth.js";
@@ -8,6 +12,11 @@ export const signup = async (req, res) => {
   const { email, password, name, goal, description } = req.body;
 
   const hashedPassword = await hashPassword(password);
+
+  const existingUser = await User.findOne({ email });
+  if (existingUser) {
+    throw new BadRequestError("이미 가입되어있는 이메일입니다.");
+  }
 
   const user = await User.create({
     email,
@@ -32,12 +41,16 @@ export const signup = async (req, res) => {
 export const login = async (req, res) => {
   const { email, password } = req.body;
   if (!email || !password) {
-    throw new BadRequestError("이메일 또는 비밀번호가 유효하지 않습니다. 다시 입력해주세요");
+    throw new BadRequestError(
+      "이메일 또는 비밀번호가 유효하지 않습니다. 다시 입력해주세요"
+    );
   }
 
   const user = await User.findOne({ email });
   if (!user) {
-    throw new UnauthenticatedError("해당 이메일로 가입된 정보를 찾을수없습니다.");
+    throw new UnauthenticatedError(
+      "해당 이메일로 가입된 정보를 찾을수없습니다."
+    );
   }
 
   const isPasswordCorrect = await comparePassword(password, user.password);
@@ -86,7 +99,9 @@ export const updateUser = async (req, res) => {
 export const updatePassword = async (req, res) => {
   const { currPassword, newPassword } = req.body;
   if (!currPassword || !newPassword) {
-    throw new BadRequestError("비밀번호가 유효하지 않습니다. 다시 입력해주세요");
+    throw new BadRequestError(
+      "비밀번호가 유효하지 않습니다. 다시 입력해주세요"
+    );
   }
 
   const user = await User.findOne({ _id: req.user.userId });

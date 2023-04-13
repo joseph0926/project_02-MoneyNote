@@ -1,54 +1,59 @@
-import React from "react";
+import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { FiArrowRight } from "react-icons/fi";
 
 import styled from "styled-components";
 
 const Home = () => {
+  const [con, setCon] = useState("con");
   return (
     <Wrapper>
       <div className="text">
-        <span
+        <Link
+          to="/auth"
           className="text-inner bottom"
-          onMouseOver={(e) => {
-            e.relatedTarget.style.backgroundColor = "#fff";
-            e.target.style.backgroundColor = "#fff";
-          }}
-          onMouseOut={(e) => {
-            e.relatedTarget.style.backgroundColor = "#a0a0a0";
-            e.target.style.backgroundColor = "#a0a0a0";
-          }}
+          // onMouseOver={(e) => {
+          //   e.relatedTarget.style.backgroundColor = "#fff";
+          //   e.target.style.backgroundColor = "#fff";
+          // }}
+          // onMouseLeave={(e) => {
+          //   e.relatedTarget.style.backgroundColor = "#a0a0a0";
+          //   e.target.style.backgroundColor = "#a0a0a0";
+          // }}
         >
-          Expense
-        </span>
+          GettingStart
+        </Link>
         <span
           className="text-inner top"
-          onMouseOver={(e) => {
-            e.relatedTarget.style.backgroundColor = "#000";
-            e.target.style.backgroundColor = "#000";
-          }}
-          onMouseOut={(e) => {
-            e.relatedTarget.style.backgroundColor = "#a0a0a0";
-            e.target.style.backgroundColor = "#a0a0a0";
-          }}
+          // onMouseOver={(e) => {
+          //   e.relatedTarget.style.backgroundColor = "#000";
+          //   e.target.style.backgroundColor = "#000";
+          // }}
+          // onMouseLeave={(e) => {
+          //   e.relatedTarget.style.backgroundColor = "#a0a0a0";
+          //   e.target.style.backgroundColor = "#a0a0a0";
+          // }}
         >
-          Tracking
+          ExpenseNote
         </span>
       </div>
-      <Link to="/auth" className="auth">
-        Sign-in / Sign-up <FiArrowRight />
-      </Link>
     </Wrapper>
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.section`
   display: flex;
   justify-content: center;
   align-items: center;
   height: 100vh;
   background: #a0a0a0;
   transition: all 0.5s ease-in-out;
+
+  &:has(.top:hover) {
+    background: #000;
+  }
+  &:has(.bottom:hover + .top) {
+    background: #fff;
+  }
 
   .text {
     position: relative;
@@ -64,36 +69,22 @@ const Wrapper = styled.div`
   .top {
     color: #fff;
     z-index: 2;
-    clip-path: polygon(0 0, 100% 0, 100% 0, 0 110%);
+    clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%);
     transition: all 0.5s ease-in-out;
   }
   .top:hover {
-    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 110%);
+    background: #000;
+    clip-path: polygon(0 0, 100% 0, 100% 100%, 0 100%);
   }
 
+  .bottom {
+    transition: all 0.5s ease-in-out;
+  }
+  .bottom:hover {
+    background: #fff;
+  }
   .bottom:hover + .top {
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
-  }
-
-  .auth {
-    display: flex;
-    align-items: center;
-    position: absolute;
-    top: 10%;
-    left: auto;
-    padding: 1rem 2rem;
-    background: transparent;
-    color: #555;
-    font-size: 1.5rem;
-    font-weight: 700;
-    z-index: 5;
-    transition: all 0.5s ease-in-out;
-    svg {
-      margin-left: 1rem;
-    }
-  }
-  .auth:hover {
-    transform: translateX(10px);
   }
 `;
 

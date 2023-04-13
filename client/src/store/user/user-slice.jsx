@@ -1,34 +1,40 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { toast } from "react-toastify";
-import { getUserFromLocalStorage, addUserToLocalStorage, removeUserFromLocalStorage } from "../../components/Helpers/localStorage";
+import {
+  getUserFromLocalStorage,
+  addUserToLocalStorage,
+  removeUserFromLocalStorage,
+} from "../../components/Helpers/localStorage";
 
 const url = "http://localhost:5000/api/v1";
 
 const initialState = {
   isLoading: false,
-  // isLoggedIn: null,
   user: getUserFromLocalStorage(),
 };
 
-export const signup = createAsyncThunk("user/signup", async (user, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/auth/signup`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(user),
-    });
+export const signup = createAsyncThunk(
+  "user/signup",
+  async (user, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/auth/signup`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify(user),
+      });
 
-    if (!response.ok) {
-      throw await response.json();
+      if (!response.ok) {
+        throw await response.json();
+      }
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
   }
-});
+);
 export const login = createAsyncThunk("user/login", async (user, thunkAPI) => {
   try {
     const response = await fetch(`${url}/auth/login`, {
@@ -49,57 +55,63 @@ export const login = createAsyncThunk("user/login", async (user, thunkAPI) => {
   }
 });
 
-export const updateUser = createAsyncThunk("user/updateUser", async (user, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/auth/updateUser`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-      body: JSON.stringify(user),
-    });
+export const updateUser = createAsyncThunk(
+  "user/updateUser",
+  async (user, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/auth/updateUser`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+        body: JSON.stringify(user),
+      });
 
-    if (response.status === 401) {
-      thunkAPI.dispatch(logout());
-      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
-    }
-    if (!response.ok) {
-      throw await response.json();
-    }
+      if (response.status === 401) {
+        thunkAPI.dispatch(logout());
+        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      }
+      if (!response.ok) {
+        throw await response.json();
+      }
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
-});
+);
 
-export const updatePassword = createAsyncThunk("user/updatePassword", async (user, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/auth/updatePassword`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-      body: JSON.stringify(user),
-    });
+export const updatePassword = createAsyncThunk(
+  "user/updatePassword",
+  async (user, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/auth/updatePassword`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+        body: JSON.stringify(user),
+      });
 
-    if (response.status === 401) {
-      // thunkAPI.dispatch(logout());
-      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      if (response.status === 401) {
+        thunkAPI.dispatch(logout());
+        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      }
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-    if (!response.ok) {
-      throw await response.json();
-    }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
   }
-});
+);
 
 const userSlice = createSlice({
   name: "user",
@@ -107,7 +119,6 @@ const userSlice = createSlice({
   reducers: {
     logout: (state, { payload }) => {
       state.user = null;
-      // state.isLoggedIn = false;
       removeUserFromLocalStorage();
       if (payload) {
         toast.success(payload);
@@ -123,7 +134,6 @@ const userSlice = createSlice({
         const { user } = payload;
         state.isLoading = false;
         state.user = user;
-        // state.isLoggedIn = true;
         addUserToLocalStorage(user);
         toast.success(`환영합니다! ${user.name}님`);
       })
@@ -138,7 +148,6 @@ const userSlice = createSlice({
         const { user } = payload;
         state.isLoading = false;
         state.user = user;
-        // state.isLoggedIn = true;
         addUserToLocalStorage(user);
         toast.success(`안녕하세요! ${user.name}님`);
       })
