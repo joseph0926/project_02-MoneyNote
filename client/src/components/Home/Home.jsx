@@ -50,6 +50,7 @@ const Wrapper = styled.section`
     z-index: 2;
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 100%);
     transition: all 0.5s ease-in-out;
+    padding: 2rem 0;
   }
   .top:hover {
     background: #000;
