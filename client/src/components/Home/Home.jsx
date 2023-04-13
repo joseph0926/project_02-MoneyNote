@@ -1,5 +1,6 @@
 import React from "react";
 import { Link } from "react-router-dom";
+import { FiArrowRight } from "react-icons/fi";
 
 import styled from "styled-components";
 
@@ -34,8 +35,8 @@ const Home = () => {
           Tracking
         </span>
       </div>
-      <Link to="/auth" className="btn">
-        Sign-in / Sign-up
+      <Link to="/auth" className="auth">
+        Sign-in / Sign-up <FiArrowRight />
       </Link>
     </Wrapper>
   );
@@ -74,21 +75,25 @@ const Wrapper = styled.div`
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
   }
 
-  .btn {
+  .auth {
+    display: flex;
+    align-items: center;
     position: absolute;
     top: 10%;
     left: auto;
     padding: 1rem 2rem;
-    background: #fff;
-    color: #000;
-    font-size: 1.2rem;
+    background: transparent;
+    color: #555;
+    font-size: 1.5rem;
     font-weight: 700;
     z-index: 5;
     transition: all 0.5s ease-in-out;
+    svg {
+      margin-left: 1rem;
+    }
   }
-  .btn:hover {
-    background: #000;
-    color: #fff;
+  .auth:hover {
+    transform: translateX(10px);
   }
 `;
 

@@ -87,8 +87,12 @@ const Wrapper = styled.div`
   width: 100%;
   padding: 3rem 2rem 4rem;
   box-shadow: 0 4px 6px -1px;
+  h2 {
+    text-transform: capitalize;
+    margin-bottom: 2rem;
+  }
   h3 {
-    margin-top: 0;
+    margin-bottom: 1.5rem;
   }
   .form,
   .form-password {

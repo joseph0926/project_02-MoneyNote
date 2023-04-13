@@ -51,6 +51,8 @@ export const login = async (req, res) => {
     user: {
       email: user.email,
       name: user.name,
+      goal: user.goal,
+      description: user.description,
       token,
     },
   });
@@ -94,7 +96,7 @@ export const updatePassword = async (req, res) => {
     throw new UnauthenticatedError("비밀번호가 일치하지 않습니다.");
   }
 
-  const hashNewPassword = hashPassword(newPassword);
+  const hashNewPassword = await hashPassword(newPassword);
   user.password = hashNewPassword;
   await user.save();
 

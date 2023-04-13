@@ -33,7 +33,7 @@ const Navbar = () => {
               </Link>
             )}
             {token && (
-              <Link to="/" onClick={() => dispatchFn(logout("성공적으로 로그아웃 되셨습니다."))}>
+              <Link to="/land" onClick={() => dispatchFn(logout("성공적으로 로그아웃 되셨습니다."))}>
                 <FiUserMinus />
               </Link>
             )}
