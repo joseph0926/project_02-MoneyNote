@@ -7,9 +7,11 @@ import { rateLimit as rateLimiter } from "express-rate-limit";
 
 import connectDB from "./db/connect.js";
 import { router as authRouter } from "./routes/auth.js";
+import { router as expenseRouter } from "./routes/expense.js";
 
 import notFoundMiddleware from "./middleware/not-found.js";
 import errorHandlerMiddleware from "./middleware/error-handler.js";
+import { authenticateUser } from "./middleware/authMiddleware.js";
 
 const app = express();
 
@@ -27,7 +29,10 @@ app.use(express.json());
 
 app.use((req, res, next) => {
   res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept, Authorization");
+  res.setHeader(
+    "Access-Control-Allow-Headers",
+    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+  );
   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
 
   next();
@@ -35,6 +40,7 @@ app.use((req, res, next) => {
 
 // router
 app.use("/api/v1/auth", authRouter);
+app.use("/api/v1/expense", authenticateUser, expenseRouter);
 
 // error handler
 app.use(notFoundMiddleware);
@@ -47,7 +53,9 @@ const start = async () => {
   try {
     await connectDB(process.env.MONGO_URL);
     console.log("DB 연결 성공!");
-    app.listen(port, () => console.log(`서버가 포트번호 ${port}에서 정상작동중입니다...`));
+    app.listen(port, () =>
+      console.log(`서버가 포트번호 ${port}에서 정상작동중입니다...`)
+    );
   } catch (error) {
     console.log(error);
   }

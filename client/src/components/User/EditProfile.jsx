@@ -60,9 +60,24 @@ const EditProfile = () => {
       <form className="form" onSubmit={submitHandler}>
         <h3>개인정보 수정</h3>
         <div className="form-center">
-          <InputHelper type="text" name="name" value={userData.name} handleChange={inputHandler} />
-          <InputHelper type="text" name="goal" value={userData.goal} handleChange={inputHandler} />
-          <InputHelper type="text" name="description" value={userData.description} handleChange={inputHandler} />
+          <InputHelper
+            type="text"
+            name="name"
+            value={userData.name}
+            handleChange={inputHandler}
+          />
+          <InputHelper
+            type="text"
+            name="goal"
+            value={userData.goal}
+            handleChange={inputHandler}
+          />
+          <InputHelper
+            type="text"
+            name="description"
+            value={userData.description}
+            handleChange={inputHandler}
+          />
           <button className="btn btn-block" type="submit" disabled={isLoading}>
             {isLoading ? "loading,,," : "save changes"}
           </button>
@@ -71,8 +86,18 @@ const EditProfile = () => {
       <form className="form-password" onSubmit={submitHandler2}>
         <h3>비밀번호 수정</h3>
         <div className="form-center">
-          <InputHelper type="password" name="currPassword" value={password.currPassword} handleChange={inputHandler2} />
-          <InputHelper type="password" name="newPassword" value={password.newPassword} handleChange={inputHandler2} />
+          <InputHelper
+            type="password"
+            name="currPassword"
+            value={password.currPassword}
+            handleChange={inputHandler2}
+          />
+          <InputHelper
+            type="password"
+            name="newPassword"
+            value={password.newPassword}
+            handleChange={inputHandler2}
+          />
           <button className="btn btn-block" type="submit" disabled={isLoading}>
             {isLoading ? "loading,,," : "save changes"}
           </button>
@@ -84,6 +109,7 @@ const EditProfile = () => {
 
 const Wrapper = styled.div`
   border-radius: 10px;
+  height: 100%;
   width: 100%;
   padding: 3rem 2rem 4rem;
   box-shadow: 0 4px 6px -1px;

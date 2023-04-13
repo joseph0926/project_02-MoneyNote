@@ -42,6 +42,7 @@ const Wrapper = styled.section`
     top: 5rem;
   }
   .main {
+    height: calc(100vh - 5rem);
     width: calc(100vw - 250px);
     position: absolute;
     left: 250px;
