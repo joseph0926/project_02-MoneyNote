@@ -1,40 +1,19 @@
-import React, { useState } from "react";
+import React from "react";
 import { Link } from "react-router-dom";
 
 import styled from "styled-components";
 
 const Home = () => {
-  const [con, setCon] = useState("con");
   return (
     <Wrapper>
       <div className="text">
-        <Link
-          to="/auth"
-          className="text-inner bottom"
-          // onMouseOver={(e) => {
-          //   e.relatedTarget.style.backgroundColor = "#fff";
-          //   e.target.style.backgroundColor = "#fff";
-          // }}
-          // onMouseLeave={(e) => {
-          //   e.relatedTarget.style.backgroundColor = "#a0a0a0";
-          //   e.target.style.backgroundColor = "#a0a0a0";
-          // }}
-        >
-          GettingStart
-        </Link>
-        <span
-          className="text-inner top"
-          // onMouseOver={(e) => {
-          //   e.relatedTarget.style.backgroundColor = "#000";
-          //   e.target.style.backgroundColor = "#000";
-          // }}
-          // onMouseLeave={(e) => {
-          //   e.relatedTarget.style.backgroundColor = "#a0a0a0";
-          //   e.target.style.backgroundColor = "#a0a0a0";
-          // }}
-        >
-          ExpenseNote
-        </span>
+        <div className="text-inner bottom">
+          <Link to="/auth">GettingStart</Link>
+          <Link to="/auth" className="auth">
+            로그인 / 회원가입
+          </Link>
+        </div>
+        <span className="text-inner top">ExpenseNote</span>
       </div>
     </Wrapper>
   );
@@ -78,6 +57,10 @@ const Wrapper = styled.section`
   }
 
   .bottom {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    background: transparent;
     transition: all 0.5s ease-in-out;
   }
   .bottom:hover {
@@ -85,6 +68,11 @@ const Wrapper = styled.section`
   }
   .bottom:hover + .top {
     clip-path: polygon(0 0, 100% 0, 100% 0, 0 0);
+  }
+
+  .auth {
+    font-size: 2rem;
+    color: #000;
   }
 `;
 

@@ -46,15 +46,15 @@ const Wrapper = styled.div`
   @keyframes ring {
     0% {
       transform: rotate(0deg);
-      box-shadow: 1px 5px 2px #e68200;
+      box-shadow: 1px 5px 2px #00d3e6;
     }
     50% {
       transform: rotate(180deg);
-      box-shadow: 1px 5px 2px #e64500;
+      box-shadow: 1px 5px 2px #00b4e6;
     }
     100% {
       transform: rotate(360deg);
-      box-shadow: 1px 5px 2px #e60000;
+      box-shadow: 1px 5px 2px #005ce6;
     }
   }
   @keyframes loadingText {
