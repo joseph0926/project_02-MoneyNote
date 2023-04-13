@@ -1,7 +1,8 @@
 import React from "react";
+import Money from "../components/Money/Money";
 
 const MoneyPage = () => {
-  return <div>MoneyPage</div>;
+  return <Money />;
 };
 
 export default MoneyPage;

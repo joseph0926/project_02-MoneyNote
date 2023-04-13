@@ -4,6 +4,7 @@ import express from "express";
 import "express-async-errors";
 import helmet from "helmet";
 import { rateLimit as rateLimiter } from "express-rate-limit";
+import cors from "cors";
 
 import connectDB from "./db/connect.js";
 import { router as authRouter } from "./routes/auth.js";
@@ -24,19 +25,20 @@ app.use(
   })
 );
 app.use(helmet());
+app.use(cors());
 
 app.use(express.json());
 
-app.use((req, res, next) => {
-  res.setHeader("Access-Control-Allow-Origin", "*");
-  res.setHeader(
-    "Access-Control-Allow-Headers",
-    "Origin, X-Requested-With, Content-Type, Accept, Authorization"
-  );
-  res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
+// app.use((req, res, next) => {
+//   res.setHeader("Access-Control-Allow-Origin", "*");
+//   res.setHeader(
+//     "Access-Control-Allow-Headers",
+//     "Origin, X-Requested-With, Content-Type, Accept, Authorization"
+//   );
+//   res.setHeader("Access-Control-Allow-Methods", "GET, POST, PATCH, DELETE");
 
-  next();
-});
+//   next();
+// });
 
 // router
 app.use("/api/v1/auth", authRouter);
