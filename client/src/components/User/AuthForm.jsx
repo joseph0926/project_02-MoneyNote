@@ -59,7 +59,6 @@ const AuthForm = ({ isSign }) => {
     <Wrapper>
       <form className="form" onSubmit={submitHandler}>
         <h3>{isSign ? "로그인" : "회원가입"}</h3>
-
         {!isSign && (
           <InputHelper type="text" name="name" value={values.name} handleChange={valueChangeHandler} handleBluer={valueInputBlurHandler} />
         )}
@@ -76,12 +75,12 @@ const AuthForm = ({ isSign }) => {
             추가 정보 입력하기
           </button>
         )}
-
-        {!isSign && showExtra && <InputHelper type="text" name="goal" value={values.goal} handleChange={valueChangeHandler} />}
         {!isSign && showExtra && (
-          <InputHelper type="text" name="description" value={values.description} handleChange={valueChangeHandler} />
+          <InputHelper type="text" labelText="목표한도(숫자만)" name="goal" value={values.goal} handleChange={valueChangeHandler} />
         )}
-
+        {!isSign && showExtra && (
+          <InputHelper type="text" name="description" labelText="목표메모" value={values.description} handleChange={valueChangeHandler} />
+        )}
         <button type="submit" className="btn btn-block" disabled={isLoading}>
           {isLoading ? "loading,,," : "submit"}
         </button>

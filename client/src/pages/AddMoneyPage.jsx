@@ -1,7 +1,8 @@
 import React from "react";
+import AddExpense from "../components/Money/AddExpense";
 
 const AddMoneyPage = () => {
-  return <div>AddMoneyPage</div>;
+  return <AddExpense />;
 };
 
 export default AddMoneyPage;

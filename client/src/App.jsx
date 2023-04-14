@@ -26,10 +26,7 @@ const App = () => {
         {
           path: "money",
           element: <MoneyPage />,
-          children: [
-            { path: ":id", element: <MoneyDetailPage /> },
-            { path: "add-money", element: <AddMoneyPage /> },
-          ],
+          children: [{ path: "add-money", element: <AddMoneyPage /> }],
         },
       ],
     },

@@ -60,24 +60,9 @@ const EditProfile = () => {
       <form className="form" onSubmit={submitHandler}>
         <h3>개인정보 수정</h3>
         <div className="form-center">
-          <InputHelper
-            type="text"
-            name="name"
-            value={userData.name}
-            handleChange={inputHandler}
-          />
-          <InputHelper
-            type="text"
-            name="goal"
-            value={userData.goal}
-            handleChange={inputHandler}
-          />
-          <InputHelper
-            type="text"
-            name="description"
-            value={userData.description}
-            handleChange={inputHandler}
-          />
+          <InputHelper type="text" name="name" value={userData.name} handleChange={inputHandler} />
+          <InputHelper type="text" name="goal" labelText="목표한도(숫자만)" value={userData.goal} handleChange={inputHandler} />
+          <InputHelper type="text" name="description" labelText="목표메모" value={userData.description} handleChange={inputHandler} />
           <button className="btn btn-block" type="submit" disabled={isLoading}>
             {isLoading ? "loading,,," : "save changes"}
           </button>
@@ -89,12 +74,14 @@ const EditProfile = () => {
           <InputHelper
             type="password"
             name="currPassword"
+            labelText="현재 비밀번호"
             value={password.currPassword}
             handleChange={inputHandler2}
           />
           <InputHelper
             type="password"
             name="newPassword"
+            labelText="새로운 비밀번호"
             value={password.newPassword}
             handleChange={inputHandler2}
           />

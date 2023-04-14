@@ -14,3 +14,9 @@ export const getAllExpense = async (req, res) => {
 
   res.status(StatusCodes.OK).json({ expenses });
 };
+
+export const createExpense = async (req, res) => {
+  req.body.createdBy = req.user.userId;
+  const expense = await Money.create(req.body);
+  res.status(StatusCodes.CREATED).json({ expense });
+};

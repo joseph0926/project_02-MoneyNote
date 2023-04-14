@@ -1,5 +1,6 @@
 import React, { useEffect } from "react";
 import { useSelector, useDispatch } from "react-redux";
+import { Outlet } from "react-router-dom";
 
 import Expense from "./Expense";
 import Loading from "../UI/Loading";
@@ -16,27 +17,35 @@ const Money = () => {
   }, []);
 
   if (isLoading) {
-    return <Loading />;
+    return (
+      <>
+        <Outlet />
+        <Loading />
+      </>
+    );
   }
 
   if (expenses.length === 0) {
     return (
       <Wrapper>
+        <Outlet />
         <h2>아직 추가된 비용이 없습니다</h2>
       </Wrapper>
     );
   }
 
   return (
-    <Wrapper>
-      <h5>All Expense</h5>
-      <div className="expenses">
-        {expenses.map((expense) => {
-          console.log(expense);
-          return <Expense key={expense._id} {...expense} />;
-        })}
-      </div>
-    </Wrapper>
+    <>
+      <Wrapper>
+        <Outlet />
+        <h5>All Expense</h5>
+        <div className="expenses">
+          {expenses.map((expense) => {
+            return <Expense key={expense._id} {...expense} />;
+          })}
+        </div>
+      </Wrapper>
+    </>
   );
 };
 
