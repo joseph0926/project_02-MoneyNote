@@ -3,15 +3,20 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InputHelper from "../Helpers/InputHelper";
 import InputSelectorHelper from "../Helpers/InputSelectorHelper";
-import { changeHandler, clearHandler, createExpense } from "../../store/money/expense-slice";
+import { changeHandler, clearHandler, createExpense, getAllExpenses } from "../../store/money/expense-slice";
 
 import styled from "styled-components";
 
 const AddExpense = () => {
   const dispatchFn = useDispatch();
-  const { isLoading, isEditing, title, description, status, statusOptions, expenseType, expenseTypeOptions } = useSelector(
+  const { isLoading, isEditing, title, description, status, statusOptions, expensesType, expensesTypeOptions, expenseAmount } = useSelector(
     (state) => state.expense
   );
+
+  const clear = () => {
+    dispatchFn(clearHandler());
+    dispatchFn(getAllExpenses());
+  };
 
   const inputHandler = (e) => {
     const name = e.target.name;
@@ -27,7 +32,7 @@ const AddExpense = () => {
       return;
     }
 
-    dispatchFn(createExpense({ title, description, status, expenseType }));
+    dispatchFn(createExpense({ title, description, status, expensesType, expenseAmount }));
   };
 
   return (
@@ -38,19 +43,20 @@ const AddExpense = () => {
         <div className="form-center">
           <InputHelper type="text" name="title" labelText="지출내용" value={title} handleChange={inputHandler} />
           <InputHelper type="text" name="description" labelText="지출설명" value={description} handleChange={inputHandler} />
+          <InputHelper type="number" name="expenseAmount" labelText="지출금액" value={expenseAmount} handleChange={inputHandler} />
 
           <InputSelectorHelper name="status" value={status} handleChange={inputHandler} list={statusOptions} />
 
           <InputSelectorHelper
-            name="expenseType"
+            name="expensesType"
             labelText="expense type"
-            value={expenseType}
+            value={expensesType}
             handleChange={inputHandler}
-            list={expenseTypeOptions}
+            list={expensesTypeOptions}
           />
 
           <div className="btn-container">
-            <button type="button" className="btn btn-block clear-btn" onClick={() => dispatchFn(clearHandler())}>
+            <button type="button" className="btn btn-block clear-btn" onClick={clear}>
               clear
             </button>
             <button type="submit" className="btn btn-block submit-btn" disabled={isLoading}>

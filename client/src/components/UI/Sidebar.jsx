@@ -26,7 +26,6 @@ const Wrapper = styled.aside`
       min-height: 100vh;
       width: 250px;
       margin-left: -250px;
-      box-shadow: 0px 3px 7px;
       transition: all 0.5s;
     }
     .content {

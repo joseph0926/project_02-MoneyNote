@@ -9,8 +9,10 @@ const initialExpenseState = {
   description: "",
   statusOptions: ["지출예정", "지출"],
   status: "지출예정",
-  expenseTypeOptions: ["생활비", "교육비", "취미생활비", "그외"],
-  expenseType: "그외",
+  expensesTypeOptions: ["생활비", "교육비", "취미생활비", "그외"],
+  expensesType: "그외",
+  expenseAmount: 0,
+  totalExpenseAmount: 0,
   isEditing: false,
   editExpense: "",
 };
@@ -62,6 +64,7 @@ export const createExpense = createAsyncThunk("expense/createExpense", async (ex
       throw await response.json();
     }
 
+    thunkAPI.dispatch(getAllExpenses());
     thunkAPI.dispatch(clearHandler());
 
     const data = await response.json();

@@ -26,6 +26,10 @@ const MoneySchema = new mongoose.Schema({
     enum: ["생활비", "교육비", "취미생활비", "그외"],
     default: "그외",
   },
+  expenseAmount: {
+    type: Number,
+    required: [true, "지출 금액을 입력해주세요"],
+  },
 });
 
 export default mongoose.model("Money", MoneySchema);

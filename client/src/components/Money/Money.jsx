@@ -25,7 +25,7 @@ const Money = () => {
     );
   }
 
-  if (expenses.length === 0) {
+  if (!expenses || expenses.length === 0) {
     return (
       <Wrapper>
         <Outlet />
@@ -38,7 +38,7 @@ const Money = () => {
     <>
       <Wrapper>
         <Outlet />
-        <h5>All Expense</h5>
+        <h2>All Expense</h2>
         <div className="expenses">
           {expenses.map((expense) => {
             return <Expense key={expense._id} {...expense} />;
@@ -50,12 +50,11 @@ const Money = () => {
 };
 
 const Wrapper = styled.section`
-  margin-top: 4rem;
+  padding-top: 4rem;
+  border-left: 2px solid;
   h2 {
     text-transform: none;
-  }
-  & > h5 {
-    font-weight: 700;
+    margin: 3rem 2.5rem;
   }
   .expenses {
     display: grid;
