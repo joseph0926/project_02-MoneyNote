@@ -14,7 +14,7 @@ const initialExpenseState = {
   expenseAmount: 0,
   totalExpenseAmount: 0,
   isEditing: false,
-  editExpense: "",
+  editExpenseId: "",
 };
 
 const initialState = {
@@ -110,6 +110,38 @@ export const deleteExpense = createAsyncThunk(
   }
 );
 
+export const updateExpense = createAsyncThunk(
+  "expense/updateExpense",
+  async ({ expenseId, expense }, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense/${expenseId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+        body: JSON.stringify(expense),
+      });
+
+      if (response.status === 401) {
+        thunkAPI.dispatch(logout());
+        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      }
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      thunkAPI.dispatch(getAllExpenses());
+      thunkAPI.dispatch(clearHandler());
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
+  }
+);
+
 const expenseSlice = createSlice({
   name: "expense",
   initialState,
@@ -119,6 +151,9 @@ const expenseSlice = createSlice({
     },
     clearHandler: () => {
       return { ...initialExpenseState };
+    },
+    setEditMode: (state, { payload }) => {
+      return { ...state, isEditing: true, ...payload };
     },
   },
   extraReducers: (builder) => {
@@ -158,10 +193,23 @@ const expenseSlice = createSlice({
       .addCase(deleteExpense.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error({ payload });
+      })
+      // updateExpense
+      .addCase(updateExpense.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(updateExpense.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        toast.success("지출 내역 수정에 성공하셨습니다");
+      })
+      .addCase(updateExpense.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error({ payload });
       });
   },
 });
 
-export const { clearHandler, changeHandler } = expenseSlice.actions;
+export const { clearHandler, changeHandler, setEditMode } =
+  expenseSlice.actions;
 
 export default expenseSlice.reducer;

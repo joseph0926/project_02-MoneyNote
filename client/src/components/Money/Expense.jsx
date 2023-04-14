@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 
 import ExpenseInfo from "./ExpenseInfo";
-import { deleteExpense } from "../../store/money/expense-slice";
+import { deleteExpense, setEditMode } from "../../store/money/expense-slice";
 
 import { FaCalendarAlt, FaMoneyBill } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
@@ -44,7 +44,16 @@ const Expense = ({
               to="add-money"
               className="btn edit-btn"
               onClick={() => {
-                // dispatchFn(setEditJob({ editJobId: _id, position, company, jobLocation, jobType, status }));
+                dispatchFn(
+                  setEditMode({
+                    editExpenseId: _id,
+                    title,
+                    description,
+                    expenseAmount,
+                    expensesType,
+                    status,
+                  })
+                );
               }}
             >
               Edit

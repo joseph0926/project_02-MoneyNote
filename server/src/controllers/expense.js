@@ -34,3 +34,23 @@ export const deleteExpense = async (req, res) => {
   }
   res.status(StatusCodes.OK).json({ message: "삭제 성공" });
 };
+
+export const updateExpense = async (req, res) => {
+  const { userId } = req.user;
+  const { id: expenseId } = req.params;
+  const { title, description, expenseAmount } = req.body;
+  if (title === "" || description === "" || expenseAmount === 0) {
+    throw new BadRequestError("필수 항목들은 비울수 없습니다.");
+  }
+
+  const expense = await Money.findByIdAndUpdate(
+    { _id: expenseId, createdBy: userId },
+    req.body,
+    { new: true, runValidators: true }
+  );
+  if (!expense) {
+    throw new NotFoundError(`${expenseId}의 항목을 찾을 수 없습니다.`);
+  }
+
+  res.status(StatusCodes.OK).json({ expense });
+};

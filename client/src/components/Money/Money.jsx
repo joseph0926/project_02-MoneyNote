@@ -19,8 +19,8 @@ const Money = () => {
   if (isLoading) {
     return (
       <>
-        <Outlet />
         <Loading />
+        <Outlet />
       </>
     );
   }
