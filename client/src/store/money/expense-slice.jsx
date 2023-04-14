@@ -24,53 +24,91 @@ const initialState = {
   ...initialExpenseState,
 };
 
-export const getAllExpenses = createAsyncThunk("expense/getAllExpenses", async (_, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/expense`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-    });
+export const getAllExpenses = createAsyncThunk(
+  "expense/getAllExpenses",
+  async (_, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
 
-    if (!response.ok) {
-      throw await response.json();
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
   }
-});
+);
 
-export const createExpense = createAsyncThunk("expense/createExpense", async (expense, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/expense`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-      body: JSON.stringify(expense),
-    });
+export const createExpense = createAsyncThunk(
+  "expense/createExpense",
+  async (expense, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+        body: JSON.stringify(expense),
+      });
 
-    if (response.status === 401) {
-      thunkAPI.dispatch(logout());
-      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      if (response.status === 401) {
+        thunkAPI.dispatch(logout());
+        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      }
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      thunkAPI.dispatch(getAllExpenses());
+      thunkAPI.dispatch(clearHandler());
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-    if (!response.ok) {
-      throw await response.json();
+  }
+);
+
+export const deleteExpense = createAsyncThunk(
+  "expense/deleteExpense",
+  async (expenseId, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense/${expenseId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+
+      if (response.status === 401) {
+        thunkAPI.dispatch(logout());
+        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      }
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      thunkAPI.dispatch(getAllExpenses());
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-
-    thunkAPI.dispatch(getAllExpenses());
-    thunkAPI.dispatch(clearHandler());
-
-    const data = await response.json();
-    return data;
-  } catch (error) {}
-});
+  }
+);
 
 const expenseSlice = createSlice({
   name: "expense",
@@ -102,12 +140,24 @@ const expenseSlice = createSlice({
         state.isLoading = true;
       })
       .addCase(createExpense.fulfilled, (state, { payload }) => {
-        state.isLoading - false;
+        state.isLoading = false;
         toast.success("새로운 지출 내역 생성에 성공하셨습니다");
       })
       .addCase(createExpense.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error(payload);
+      })
+      // deleteExpense
+      .addCase(deleteExpense.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(deleteExpense.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        toast.success("지출 내역 삭제에 성공하셨습니다");
+      })
+      .addCase(deleteExpense.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error({ payload });
       });
   },
 });

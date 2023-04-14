@@ -20,3 +20,17 @@ export const createExpense = async (req, res) => {
   const expense = await Money.create(req.body);
   res.status(StatusCodes.CREATED).json({ expense });
 };
+
+export const deleteExpense = async (req, res) => {
+  const { userId } = req.user;
+  const { id: expenseId } = req.params;
+
+  const expense = await Money.findByIdAndRemove({
+    _id: expenseId,
+    createdBy: userId,
+  });
+  if (!expense) {
+    throw new NotFoundError(`${expenseId}의 항목을 찾을 수 없습니다.`);
+  }
+  res.status(StatusCodes.OK).json({ message: "삭제 성공" });
+};

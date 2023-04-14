@@ -4,6 +4,7 @@ import { Link } from "react-router-dom";
 import moment from "moment";
 
 import ExpenseInfo from "./ExpenseInfo";
+import { deleteExpense } from "../../store/money/expense-slice";
 
 import { FaCalendarAlt, FaMoneyBill } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
@@ -52,7 +53,7 @@ const Expense = ({
               type="button"
               className="btn delete-btn"
               onClick={() => {
-                // dispatchFn(deleteJob());
+                dispatchFn(deleteExpense(_id));
               }}
             >
               Delete

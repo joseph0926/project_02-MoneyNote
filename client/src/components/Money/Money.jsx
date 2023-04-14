@@ -27,7 +27,7 @@ const Money = () => {
 
   if (!expenses || expenses.length === 0) {
     return (
-      <Wrapper>
+      <Wrapper style={{ height: "100%" }}>
         <Outlet />
         <h2>아직 추가된 비용이 없습니다</h2>
       </Wrapper>
