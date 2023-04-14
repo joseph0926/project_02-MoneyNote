@@ -1,7 +1,8 @@
 import React from "react";
+import Stats from "../components/Home/Stats";
 
 const StatsPage = () => {
-  return <div>StatsPage</div>;
+  return <Stats />;
 };
 
 export default StatsPage;

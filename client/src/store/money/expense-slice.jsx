@@ -4,6 +4,14 @@ import { logout } from "../user/user-slice";
 
 const url = "http://localhost:5000/api/v1";
 
+const initialFilterState = {
+  search: "",
+  searchStatus: "all",
+  searchType: "all",
+  sort: "latest",
+  sortOptions: ["latest", "oldest", "amount-desc", "amount-asc"],
+};
+
 const initialExpenseState = {
   title: "",
   description: "",
@@ -21,7 +29,12 @@ const initialState = {
   isLoading: false,
   expenses: [],
   totalExpense: 0,
+  numOfPages: 1,
+  page: 1,
+  stats: {},
+  monthlyApplications: [],
   ...initialExpenseState,
+  ...initialFilterState,
 };
 
 export const getAllExpenses = createAsyncThunk(
@@ -142,6 +155,28 @@ export const updateExpense = createAsyncThunk(
   }
 );
 
+export const showStats = createAsyncThunk(
+  "expense/showStats",
+  async (_, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense/stats`, {
+        method: "GET",
+        headers: {
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
+    }
+  }
+);
+
 const expenseSlice = createSlice({
   name: "expense",
   initialState,
@@ -205,6 +240,19 @@ const expenseSlice = createSlice({
       .addCase(updateExpense.rejected, (state, { payload }) => {
         state.isLoading = false;
         toast.error({ payload });
+      })
+      // stats
+      .addCase(showStats.pending, (state) => {
+        state.isLoading = true;
+      })
+      .addCase(showStats.fulfilled, (state, { payload }) => {
+        state.isLoading = false;
+        state.stats = payload.defaultStats;
+        state.monthlyApplications = payload.monthlyApplications;
+      })
+      .addCase(showStats.rejected, (state, { payload }) => {
+        state.isLoading = false;
+        toast.error(payload);
       });
   },
 });
