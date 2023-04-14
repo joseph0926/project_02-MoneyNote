@@ -1,20 +1,18 @@
 import styled from "styled-components";
 
-const ExpenseInfo = ({ icon, text, expenseAmount = null }) => {
+const ExpenseInfo = ({ icon, text }) => {
   return (
     <Wrapper>
       <span className="icon">{icon}</span>
       <span className="text">{text}</span>
-      <span className="amount">{expenseAmount}</span>
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   margin-top: 0.5rem;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  justify-content: center;
+  display: flex;
+  align-items: center;
   .icon {
     margin-right: 1rem;
     display: flex;
@@ -26,9 +24,6 @@ const Wrapper = styled.div`
   .text {
     text-transform: capitalize;
     letter-spacing: var(--letterSpacing);
-  }
-
-  .amount {
   }
 `;
 

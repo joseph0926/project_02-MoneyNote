@@ -9,7 +9,15 @@ import { FaCalendarAlt, FaMoneyBill } from "react-icons/fa";
 import { MdAttachMoney } from "react-icons/md";
 import styled from "styled-components";
 
-const Expense = ({ _id, title, description, expensesType, status, createdAt, expenseAmount }) => {
+const Expense = ({
+  _id,
+  title,
+  description,
+  expensesType,
+  status,
+  createdAt,
+  expenseAmount,
+}) => {
   const dispatchFn = useDispatch();
   const date = moment(createdAt).format("MMM Do, YYYY");
   return (
@@ -26,7 +34,7 @@ const Expense = ({ _id, title, description, expensesType, status, createdAt, exp
       <div className="content">
         <div className="content-center">
           <ExpenseInfo icon={<FaCalendarAlt />} text={date} />
-          <ExpenseInfo icon={<FaMoneyBill />} text={expensesType} expenseAmount={expenseAmount} />
+          <ExpenseInfo icon={<FaMoneyBill />} text={expensesType} />
           <div className={`status ${status}`}>{status}</div>
         </div>
         <footer>
@@ -49,6 +57,11 @@ const Expense = ({ _id, title, description, expensesType, status, createdAt, exp
             >
               Delete
             </button>
+          </div>
+          <div>
+            <FaMoneyBill />
+            <span>지출금액: </span>
+            {expenseAmount}원
           </div>
         </footer>
       </div>
@@ -125,9 +138,8 @@ const Wrapper = styled.article`
   }
 
   .status {
-    border-radius: var(--borderRadius);
+    border-radius: 10px;
     text-transform: capitalize;
-    letter-spacing: var(--letterSpacing);
     text-align: center;
     width: 100px;
     height: 30px;
@@ -135,24 +147,25 @@ const Wrapper = styled.article`
   }
   footer {
     margin-top: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 8.2rem;
+
+    svg {
+      font-size: 1.25rem;
+      margin-right: 1rem;
+    }
   }
   .edit-btn,
   .delete-btn {
-    letter-spacing: var(--letterSpacing);
     cursor: pointer;
     height: 30px;
   }
   .edit-btn {
-    color: var(--green-dark);
-    background: var(--green-light);
     margin-right: 0.5rem;
   }
   .delete-btn {
-    color: var(--red-dark);
-    background: var(--red-light);
-  }
-  &:hover .actions {
-    visibility: visible;
+    background: red;
   }
 `;
 
