@@ -177,7 +177,7 @@ const expenseSlice = createSlice({
       state[name] = value;
     },
     clearHandler: () => {
-      return { ...initialExpenseState };
+      return { ...initialState };
     },
     setEditMode: (state, { payload }) => {
       return { ...state, isEditing: true, ...payload };
