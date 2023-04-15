@@ -12,6 +12,11 @@ const initialFilterState = {
   sortOptions: ["latest", "oldest", "amount-desc", "amount-asc"],
 };
 
+const initialTotalState = {
+  expenseAmount: 0,
+  totalExpenseAmount: 0,
+};
+
 const initialExpenseState = {
   title: "",
   description: "",
@@ -19,8 +24,6 @@ const initialExpenseState = {
   status: "지출예정",
   expensesTypeOptions: ["생활비", "교육비", "취미생활비", "그외"],
   expensesType: "그외",
-  expenseAmount: 0,
-  totalExpenseAmount: 0,
   isEditing: false,
   editExpenseId: "",
 };
@@ -33,149 +36,138 @@ const initialState = {
   page: 1,
   stats: {},
   monthlyApplications: [],
+  ...initialTotalState,
   ...initialExpenseState,
   ...initialFilterState,
 };
 
-export const getAllExpenses = createAsyncThunk(
-  "expense/getAllExpenses",
-  async (_, thunkAPI) => {
-    try {
-      const response = await fetch(`${url}/expense`, {
-        method: "GET",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
+export const getAllExpenses = createAsyncThunk("expense/getAllExpenses", async (_, thunkAPI) => {
+  try {
+    const response = await fetch(`${url}/expense`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+    });
 
-      if (!response.ok) {
-        throw await response.json();
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+    if (!response.ok) {
+      throw await response.json();
     }
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
 
-export const createExpense = createAsyncThunk(
-  "expense/createExpense",
-  async (expense, thunkAPI) => {
-    try {
-      const response = await fetch(`${url}/expense`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-        body: JSON.stringify(expense),
-      });
+export const createExpense = createAsyncThunk("expense/createExpense", async (expense, thunkAPI) => {
+  try {
+    const response = await fetch(`${url}/expense`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+      body: JSON.stringify(expense),
+    });
 
-      if (response.status === 401) {
-        thunkAPI.dispatch(logout());
-        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
-      }
-      if (!response.ok) {
-        throw await response.json();
-      }
-
-      thunkAPI.dispatch(getAllExpenses());
-      thunkAPI.dispatch(clearHandler());
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+    if (response.status === 401) {
+      thunkAPI.dispatch(logout());
+      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
     }
-  }
-);
-
-export const deleteExpense = createAsyncThunk(
-  "expense/deleteExpense",
-  async (expenseId, thunkAPI) => {
-    try {
-      const response = await fetch(`${url}/expense/${expenseId}`, {
-        method: "DELETE",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
-
-      if (response.status === 401) {
-        thunkAPI.dispatch(logout());
-        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
-      }
-      if (!response.ok) {
-        throw await response.json();
-      }
-
-      thunkAPI.dispatch(getAllExpenses());
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+    if (!response.ok) {
+      throw await response.json();
     }
+
+    thunkAPI.dispatch(getAllExpenses());
+    thunkAPI.dispatch(clearHandler());
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
 
-export const updateExpense = createAsyncThunk(
-  "expense/updateExpense",
-  async ({ expenseId, expense }, thunkAPI) => {
-    try {
-      const response = await fetch(`${url}/expense/${expenseId}`, {
-        method: "PATCH",
-        headers: {
-          "Content-Type": "application/json",
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-        body: JSON.stringify(expense),
-      });
+export const deleteExpense = createAsyncThunk("expense/deleteExpense", async (expenseId, thunkAPI) => {
+  try {
+    const response = await fetch(`${url}/expense/${expenseId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+    });
 
-      if (response.status === 401) {
-        thunkAPI.dispatch(logout());
-        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
-      }
-      if (!response.ok) {
-        throw await response.json();
-      }
-
-      thunkAPI.dispatch(getAllExpenses());
-      thunkAPI.dispatch(clearHandler());
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error.message);
+    if (response.status === 401) {
+      thunkAPI.dispatch(logout());
+      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
     }
-  }
-);
-
-export const showStats = createAsyncThunk(
-  "expense/showStats",
-  async (_, thunkAPI) => {
-    try {
-      const response = await fetch(`${url}/expense/stats`, {
-        method: "GET",
-        headers: {
-          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-        },
-      });
-      if (!response.ok) {
-        throw await response.json();
-      }
-
-      const data = await response.json();
-      return data;
-    } catch (error) {
-      return thunkAPI.rejectWithValue(error);
+    if (!response.ok) {
+      throw await response.json();
     }
+
+    thunkAPI.dispatch(getAllExpenses());
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
   }
-);
+});
+
+export const updateExpense = createAsyncThunk("expense/updateExpense", async ({ expenseId, expense }, thunkAPI) => {
+  try {
+    const response = await fetch(`${url}/expense/${expenseId}`, {
+      method: "PATCH",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+      body: JSON.stringify(expense),
+    });
+
+    if (response.status === 401) {
+      thunkAPI.dispatch(logout());
+      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+    }
+    if (!response.ok) {
+      throw await response.json();
+    }
+
+    thunkAPI.dispatch(getAllExpenses());
+    thunkAPI.dispatch(clearHandler());
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error.message);
+  }
+});
+
+export const showStats = createAsyncThunk("expense/showStats", async (_, thunkAPI) => {
+  try {
+    const response = await fetch(`${url}/expense/stats`, {
+      method: "GET",
+      headers: {
+        "Content-Type": "application/json",
+        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+      },
+    });
+    if (!response.ok) {
+      throw await response.json();
+    }
+
+    thunkAPI.dispatch(getAllExpenses());
+
+    const data = await response.json();
+    return data;
+  } catch (error) {
+    return thunkAPI.rejectWithValue(error);
+  }
+});
 
 const expenseSlice = createSlice({
   name: "expense",
@@ -247,17 +239,17 @@ const expenseSlice = createSlice({
       })
       .addCase(showStats.fulfilled, (state, { payload }) => {
         state.isLoading = false;
-        state.stats = payload.defaultStats;
+        state.stats = payload.stats;
         state.monthlyApplications = payload.monthlyApplications;
       })
       .addCase(showStats.rejected, (state, { payload }) => {
         state.isLoading = false;
-        toast.error(payload);
+        console.log(payload.message);
+        toast.error(payload.message);
       });
   },
 });
 
-export const { clearHandler, changeHandler, setEditMode } =
-  expenseSlice.actions;
+export const { clearHandler, changeHandler, setEditMode, calcExpense } = expenseSlice.actions;
 
 export default expenseSlice.reducer;

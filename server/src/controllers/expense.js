@@ -7,7 +7,8 @@ import BadRequestError from "../errors/bad-request.js";
 import NotFoundError from "../errors/not-found.js";
 
 export const getAllExpense = async (req, res) => {
-  const expenses = await Money.find({});
+  const { userId } = req.user;
+  const expenses = await Money.find({ createdBy: userId });
   if (!expenses) {
     throw new NotFoundError("등록된 비용을 찾을 수 없습니다.");
   }
@@ -43,11 +44,7 @@ export const updateExpense = async (req, res) => {
     throw new BadRequestError("필수 항목들은 비울수 없습니다.");
   }
 
-  const expense = await Money.findByIdAndUpdate(
-    { _id: expenseId, createdBy: userId },
-    req.body,
-    { new: true, runValidators: true }
-  );
+  const expense = await Money.findByIdAndUpdate({ _id: expenseId, createdBy: userId }, req.body, { new: true, runValidators: true });
   if (!expense) {
     throw new NotFoundError(`${expenseId}의 항목을 찾을 수 없습니다.`);
   }
@@ -56,51 +53,45 @@ export const updateExpense = async (req, res) => {
 };
 
 export const showStats = async (req, res) => {
-  let stats = await Money.aggregate([
-    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
-    {
-      $group: {
-        _id: {
-          totalExpense: { $totalExpense: "$totalExpense" },
-          totalExpenseAmount: { $totalExpenseAmount: "$totalExpenseAmount" },
-        },
-        count: { $sum: 1 },
-      },
-    },
-  ]);
+  const { userId } = req.user;
 
-  stats = stats.reduce((acc, curr) => {
-    const { _id: title, count } = curr;
-    acc[title] = count;
-    return acc;
-  }, {});
+  const totalExpense = await Money.find({ createdBy: userId }).countDocuments({});
+  const expenseAmounts = await Money.find({ createdBy: userId }).select("expenseAmount -_id");
+
+  let total = 0;
+  for (let i = 0; i < totalExpense; i++) {
+    const value = expenseAmounts[0].expenseAmount;
+    total += value;
+  }
+
+  const totalExpenseAmount = total;
 
   let monthlyApplications = await Money.aggregate([
-    { $match: { createdBy: mongoose.Types.ObjectId(req.user.userId) } },
+    { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
     {
       $group: {
-        _id: { year: { $year: "$createdAt" }, month: { $month: "$createdAt" } },
+        _id: { day: { $dayOfMonth: "$createdAt" }, month: { $month: "$createdAt" }, year: { $year: "$createdAt" } },
         count: { $sum: 1 },
       },
     },
-    { $sort: { "_id.year": -1, "_id.month": -1 } },
+    { $sort: { "_id.month": -1, "_id.year": -1 } },
     { $limit: 6 },
   ]);
   monthlyApplications = monthlyApplications
     .map((item) => {
+      console.log(item);
       const {
-        _id: { year, month },
+        _id: { day, month, year },
         count,
       } = item;
       const date = moment()
+        .day(day - 9)
         .month(month - 1)
         .year(year)
-        .format("MMM Y");
+        .format("YYYY-MM-DD");
       return { date, count };
     })
     .reverse();
 
-  res
-    .status(StatusCodes.OK)
-    .json({ defaultStats: {}, monthlyApplications: [] });
+  res.status(StatusCodes.OK).json({ stats: { totalExpense, totalExpenseAmount }, monthlyApplications });
 };

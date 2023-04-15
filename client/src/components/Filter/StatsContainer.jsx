@@ -18,7 +18,7 @@ const StatsContainer = () => {
     },
     {
       title: "지출 금액",
-      count: stats.totalExpenseAmount || 0,
+      count: stats.totalExpenseAmount + "원" || 0 + "원",
       icon: <FaCalendarCheck />,
       color: "#647acb",
       bcg: "#e0e8f9",

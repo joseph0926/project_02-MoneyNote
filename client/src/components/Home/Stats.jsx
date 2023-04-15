@@ -8,21 +8,21 @@ import ChartsContainer from "../Filter/ChartsContainer";
 
 const Stats = () => {
   const dispatchFn = useDispatch();
-  const { isLoading, monthlyApplications } = useSelector(
-    (state) => state.expense
-  );
+  const { isLoading, monthlyApplications, stats } = useSelector((state) => state.expense);
+
   useEffect(() => {
-    dispatchFn(showStats());
+    const { totalExpense, totalExpenseAmount } = stats;
+    dispatchFn(showStats({ totalExpense, totalExpenseAmount }));
   }, []);
 
   if (isLoading) {
-    return <Loading center />;
+    return <Loading />;
   }
 
   return (
     <>
       <StatsContainer />
-      {monthlyApplications.length > 0 && <ChartsContainer />}
+      {monthlyApplications?.length > 0 && <ChartsContainer />}
     </>
   );
 };
