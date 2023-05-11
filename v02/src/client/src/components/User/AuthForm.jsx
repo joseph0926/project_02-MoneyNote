@@ -108,6 +108,14 @@ const Wrapper = styled.section`
     margin-bottom: 1rem;
     background: var(--color-blue-op);
   }
+  @media only screen and (max-width: 420px) {
+    .form {
+      width: 100%;
+    }
+    .btn-extra {
+      margin-left: 0;
+    }
+  }
 `;
 
 export default AuthForm;

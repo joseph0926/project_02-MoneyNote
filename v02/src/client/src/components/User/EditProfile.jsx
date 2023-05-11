@@ -96,7 +96,7 @@ const EditProfile = () => {
 
 const Wrapper = styled.div`
   border-radius: 10px;
-  height: 100%;
+  height: 100vh;
   width: 100%;
   padding: 3rem 2rem 4rem;
   box-shadow: 0 4px 6px -1px;

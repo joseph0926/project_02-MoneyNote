@@ -3,7 +3,7 @@ import { useSelector, useDispatch } from "react-redux";
 import { Link } from "react-router-dom";
 import { toggleSidebar, toggleTheme } from "../../store/ui/ui-slice";
 
-import { FiMenu, FiMoon, FiSun, FiUserMinus, FiUserPlus } from "react-icons/fi";
+import { FiMenu, FiMoon, FiSun, FiLogOut, FiUserPlus } from "react-icons/fi";
 import { AiOutlineClose } from "react-icons/ai";
 import styled from "styled-components";
 import { logout } from "../../store/user/user-slice";
@@ -22,7 +22,9 @@ const Navbar = () => {
           {isSidebarOpen && <AiOutlineClose />}
         </button>
         <div className="logo">
-          <h1>Logo</h1>
+          <Link to="/">
+            <h1>Logo</h1>
+          </Link>
           <h3>MoneyNote</h3>
         </div>
         <div className="btn-container">
@@ -34,7 +36,7 @@ const Navbar = () => {
             )}
             {token && (
               <Link to="/land" onClick={() => dispatchFn(logout("성공적으로 로그아웃 되셨습니다."))}>
-                <FiUserMinus />
+                <FiLogOut />
               </Link>
             )}
           </div>
@@ -113,6 +115,11 @@ const Wrapper = styled.nav`
     }
     .toggle-btn {
       display: flex;
+    }
+  }
+  @media (max-width: 420px) {
+    .container {
+      padding-left: 0.5rem;
     }
   }
 `;

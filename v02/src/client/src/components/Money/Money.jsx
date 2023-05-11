@@ -60,6 +60,7 @@ const Wrapper = styled.section`
     display: grid;
     grid-template-columns: 1fr;
     row-gap: 2rem;
+    justify-content: center;
   }
   @media (min-width: 992px) {
     .expenses {
