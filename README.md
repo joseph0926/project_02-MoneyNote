@@ -1,28 +1,75 @@
-# ExpenseNote
+# Project - ExpenseNote
 
-<b>ExpenseNote</b> 는 단순한 가게부를 시작으로,<br/>
-  점점 발전해 나가는 비용 추적기 입니다. <br/>
-  <br/>
-  자신이 지출하거나 지출예정인 비용을 등록하고 상태를 체크해보세요!
+![expensenote-logo](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/1eaa3104-1b77-4d2b-9328-6a229345beb7)
 
-## [프로젝트 바로가기 ➡](https://project02expensenote-deploy-production.up.railway.app/)
-<br/>
+
+<aside>
+💡 자신의 지출 내역을 기록하고, 지출 상태를 한눈에 확인해보세요!
+
+</aside>
+
+## 프로젝트 소개
+
+자신의 지출내역을 여러 상태와 함께 기록할 수 있습니다.
+
+또한, 그렇게 등록된 지출내역을 한눈에 확인 할 수 있도록 하는 웹 애플리케이션입니다
+
+### [배포링크](https://project02expensenote-deploy-production.up.railway.app/land)
 
 ## 팀원
-|    Backend                                                   |   Frontend                                                         |
-|:----------------------------------------------------------------------------------------------------------------------------------------:|:----------------------------------------------------------------------------------------------------------------------------------------:|
-|![free-icon-developer-5072857](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/1ac42692-cfe7-439c-ac0a-ce7b0241fb93)|![free-icon-developer-5072857](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/1ac42692-cfe7-439c-ac0a-ce7b0241fb93)|
+
+| Frontend | Backend |
+| --- | --- |
+| ![icon](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/212deebf-579d-409e-83b3-ead4e4ef7a90) | ![icon](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/212deebf-579d-409e-83b3-ead4e4ef7a90) |
 | [김영훈](https://github.com/joseph0926) | [김영훈](https://github.com/joseph0926) |
+
+
 
 ## 기술스택
 
-#### 백엔드
-<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=java&logoColor=white"> 
-<img src="https://img.shields.io/badge/nodeJs-61DAFB?style=for-the-badge&logo=java&logoColor=white"> 
-<img src="https://img.shields.io/badge/express-61DAFB?style=for-the-badge&logo=java&logoColor=white"> 
+### 프론트엔드
+
+![JavaScript](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/ecf464a9-d8d5-48d6-851a-5e6779e75406)
+![TypeScript](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/ae2f8f9d-d0e6-40ef-ac53-368897b2b9df)
+![React-Light](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/561b4f23-f166-4c8e-b80d-e78dc612f046)
+![Redux](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/369d8521-6024-4124-a88b-4c046e52ed0a)
+![StyledComponents](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/beaa9342-0414-4b62-9710-d4d180a234a6)
 
 
-#### 프론트엔드
-<img src="https://img.shields.io/badge/javascript-F7DF1E?style=for-the-badge&logo=java&logoColor=white"> 
-<img src="https://img.shields.io/badge/react-61DAFB?style=for-the-badge&logo=java&logoColor=white"> 
-<img src="https://img.shields.io/badge/redux-61DAFB?style=for-the-badge&logo=java&logoColor=white"> 
+### 백엔드
+
+![JavaScript](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/ecf464a9-d8d5-48d6-851a-5e6779e75406)
+![TypeScript](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/ae2f8f9d-d0e6-40ef-ac53-368897b2b9df)
+![NodeJS-Light](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/bf415407-c37c-4c95-8015-5377ba6cb26c)
+![ExpressJS-Light](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/7784aedd-7c94-4b83-a40b-88dc4be07514)
+![MongoDB](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/e511053d-988e-491e-a4aa-c50899ff1ce2)
+<b>MONGOOSE</b>
+
+
+## 페이지 구성
+
+```jsx
+const router = createBrowserRouter([
+    {
+      path: "/",
+      element: <Root />,
+      errorElement: <ErrorPage />,
+      loader: protectRouteLoader,
+      children: [
+        { index: true, element: <StatsPage /> },
+        { path: "setting", element: <SettingPage /> },
+        {
+          path: "money",
+          element: <MoneyPage />,
+          children: [{ path: "add-money", element: <AddMoneyPage /> }],
+        },
+      ],
+    },
+    { path: "/auth", element: <AuthPage /> },
+    { path: "/land", element: <HomePage /> },
+  ]);
+```
+
+## ERD
+
+// 추가예정
