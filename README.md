@@ -15,7 +15,10 @@
 또한, 그렇게 등록된 지출내역을 한눈에 확인 할 수 있도록 하는 웹 애플리케이션입니다
 
 ### [배포링크](https://project02expensenote-deploy-production.up.railway.app/land)
-### [블로그기록](https://joseph0926.tistory.com/65)
+
+## 트러블슈팅
+
+### [트러블슈팅 로그 링크](https://joseph0926.tistory.com/65#2.%20%ED%94%84%EB%A1%9C%EC%A0%9D%ED%8A%B8%20%EC%A7%84%ED%96%89%EC%8B%9C%20%EC%96%B4%EB%A0%A4%EC%9B%A0%EB%8D%98%20%EC%A0%90-1)
 
 ## 팀원
 
