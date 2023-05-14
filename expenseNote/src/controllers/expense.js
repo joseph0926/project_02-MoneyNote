@@ -7,11 +7,41 @@ import BadRequestError from "../errors/bad-request.js";
 import NotFoundError from "../errors/not-found.js";
 
 export const getAllExpense = async (req, res) => {
+  const { status, expensesType, sort, search } = req.query;
   const { userId } = req.user;
-  const expenses = await Money.find({ createdBy: userId });
-  if (!expenses) {
+  const queryObj = {
+    createdBy: userId,
+  };
+
+  if (status !== "all") {
+    queryObj.status = status;
+  }
+  if (expensesType !== "all") {
+    queryObj.expensesType = expensesType;
+  }
+  if (search) {
+    queryObj.title = { $regex: search, $options: "i" };
+  }
+
+  let result = Money.find(queryObj);
+  if (!result) {
     throw new NotFoundError("등록된 비용을 찾을 수 없습니다.");
   }
+
+  if (sort === "latest") {
+    result = result.sort("-createdAt");
+  }
+  if (sort === "oldest") {
+    result = result.sort("createdAt");
+  }
+  if (sort === "amount-desc") {
+    result = result.sort("expenseAmount");
+  }
+  if (sort === "amount-asc") {
+    result = result.sort("-expenseAmount");
+  }
+
+  const expenses = await result;
 
   res.status(StatusCodes.OK).json({ expenses });
 };
@@ -44,7 +74,11 @@ export const updateExpense = async (req, res) => {
     throw new BadRequestError("필수 항목들은 비울수 없습니다.");
   }
 
-  const expense = await Money.findByIdAndUpdate({ _id: expenseId, createdBy: userId }, req.body, { new: true, runValidators: true });
+  const expense = await Money.findByIdAndUpdate(
+    { _id: expenseId, createdBy: userId },
+    req.body,
+    { new: true, runValidators: true }
+  );
   if (!expense) {
     throw new NotFoundError(`${expenseId}의 항목을 찾을 수 없습니다.`);
   }
@@ -55,8 +89,12 @@ export const updateExpense = async (req, res) => {
 export const showStats = async (req, res) => {
   const { userId } = req.user;
 
-  const totalExpense = await Money.find({ createdBy: userId }).countDocuments({});
-  const expenseAmounts = await Money.find({ createdBy: userId }).select("expenseAmount -_id");
+  const totalExpense = await Money.find({ createdBy: userId }).countDocuments(
+    {}
+  );
+  const expenseAmounts = await Money.find({ createdBy: userId }).select(
+    "expenseAmount -_id"
+  );
 
   let total = 0;
   for (let i = 0; i < totalExpense; i++) {
@@ -70,7 +108,11 @@ export const showStats = async (req, res) => {
     { $match: { createdBy: new mongoose.Types.ObjectId(req.user.userId) } },
     {
       $group: {
-        _id: { day: { $dayOfMonth: "$createdAt" }, month: { $month: "$createdAt" }, year: { $year: "$createdAt" } },
+        _id: {
+          day: { $dayOfMonth: "$createdAt" },
+          month: { $month: "$createdAt" },
+          year: { $year: "$createdAt" },
+        },
         count: { $sum: 1 },
       },
     },
@@ -93,5 +135,7 @@ export const showStats = async (req, res) => {
     })
     .reverse();
 
-  res.status(StatusCodes.OK).json({ stats: { totalExpense, totalExpenseAmount }, monthlyApplications });
+  res
+    .status(StatusCodes.OK)
+    .json({ stats: { totalExpense, totalExpenseAmount }, monthlyApplications });
 };
