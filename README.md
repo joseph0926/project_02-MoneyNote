@@ -15,6 +15,7 @@
 또한, 그렇게 등록된 지출내역을 한눈에 확인 할 수 있도록 하는 웹 애플리케이션입니다
 
 ### [배포링크](https://project02expensenote-deploy-production.up.railway.app/land)
+(테스트 아이디 -> test01@test.com / 123456)
 
 ## 트러블슈팅
 
