@@ -7,14 +7,16 @@ import Loading from "../UI/Loading";
 import { getAllExpenses } from "../../store/money/expense-slice";
 
 import styled from "styled-components";
+import SearchContainer from "../Filter/SearchContainer.jsx";
 
 const Money = () => {
   const dispatchFn = useDispatch();
-  const { isLoading, expenses } = useSelector((state) => state.expense);
+  const { isLoading, expenses, search, searchStatus, searchType, sort } =
+    useSelector((state) => state.expense);
 
   useEffect(() => {
     dispatchFn(getAllExpenses());
-  }, []);
+  }, [search, searchStatus, searchType, sort]);
 
   if (isLoading) {
     return (
@@ -29,6 +31,7 @@ const Money = () => {
     return (
       <Wrapper style={{ height: "100%" }}>
         <Outlet />
+        <SearchContainer />
         <h2>아직 추가된 비용이 없습니다</h2>
       </Wrapper>
     );
@@ -37,7 +40,8 @@ const Money = () => {
   return (
     <>
       <Wrapper>
-        <Outlet />
+        <SearchContainer />
+        {/* <Outlet /> */}
         <h2>All Expense</h2>
         <div className="expenses">
           {expenses.map((expense) => {

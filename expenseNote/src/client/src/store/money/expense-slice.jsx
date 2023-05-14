@@ -41,133 +41,154 @@ const initialState = {
   ...initialFilterState,
 };
 
-export const getAllExpenses = createAsyncThunk("expense/getAllExpenses", async (_, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/expense`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-    });
-
-    if (!response.ok) {
-      throw await response.json();
+export const getAllExpenses = createAsyncThunk(
+  "expense/getAllExpenses",
+  async (_, thunkAPI) => {
+    const { search, searchStatus, searchType, sort } =
+      thunkAPI.getState().expense;
+    let queryURL = `expense?status=${searchStatus}&expensesType=${searchType}&sort=${sort}`;
+    if (search) {
+      queryURL = queryURL + `&search=${search}`;
     }
+    try {
+      const response = await fetch(`${url}/${queryURL}`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
 
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
+    }
   }
-});
+);
 
-export const createExpense = createAsyncThunk("expense/createExpense", async (expense, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/expense`, {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-      body: JSON.stringify(expense),
-    });
+export const createExpense = createAsyncThunk(
+  "expense/createExpense",
+  async (expense, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+        body: JSON.stringify(expense),
+      });
 
-    if (response.status === 401) {
-      thunkAPI.dispatch(logout());
-      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      if (response.status === 401) {
+        thunkAPI.dispatch(logout());
+        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      }
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      thunkAPI.dispatch(getAllExpenses());
+      thunkAPI.dispatch(clearHandler());
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-    if (!response.ok) {
-      throw await response.json();
-    }
-
-    thunkAPI.dispatch(getAllExpenses());
-    thunkAPI.dispatch(clearHandler());
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
   }
-});
+);
 
-export const deleteExpense = createAsyncThunk("expense/deleteExpense", async (expenseId, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/expense/${expenseId}`, {
-      method: "DELETE",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-    });
+export const deleteExpense = createAsyncThunk(
+  "expense/deleteExpense",
+  async (expenseId, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense/${expenseId}`, {
+        method: "DELETE",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
 
-    if (response.status === 401) {
-      thunkAPI.dispatch(logout());
-      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      if (response.status === 401) {
+        thunkAPI.dispatch(logout());
+        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      }
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      thunkAPI.dispatch(getAllExpenses());
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-    if (!response.ok) {
-      throw await response.json();
-    }
-
-    thunkAPI.dispatch(getAllExpenses());
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
   }
-});
+);
 
-export const updateExpense = createAsyncThunk("expense/updateExpense", async ({ expenseId, expense }, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/expense/${expenseId}`, {
-      method: "PATCH",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-      body: JSON.stringify(expense),
-    });
+export const updateExpense = createAsyncThunk(
+  "expense/updateExpense",
+  async ({ expenseId, expense }, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense/${expenseId}`, {
+        method: "PATCH",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+        body: JSON.stringify(expense),
+      });
 
-    if (response.status === 401) {
-      thunkAPI.dispatch(logout());
-      return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      if (response.status === 401) {
+        thunkAPI.dispatch(logout());
+        return thunkAPI.rejectWithValue("인증오류가 발생하였습니다,,,");
+      }
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      thunkAPI.dispatch(getAllExpenses());
+      thunkAPI.dispatch(clearHandler());
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error.message);
     }
-    if (!response.ok) {
-      throw await response.json();
-    }
-
-    thunkAPI.dispatch(getAllExpenses());
-    thunkAPI.dispatch(clearHandler());
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error.message);
   }
-});
+);
 
-export const showStats = createAsyncThunk("expense/showStats", async (_, thunkAPI) => {
-  try {
-    const response = await fetch(`${url}/expense/stats`, {
-      method: "GET",
-      headers: {
-        "Content-Type": "application/json",
-        authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
-      },
-    });
-    if (!response.ok) {
-      throw await response.json();
+export const showStats = createAsyncThunk(
+  "expense/showStats",
+  async (_, thunkAPI) => {
+    try {
+      const response = await fetch(`${url}/expense/stats`, {
+        method: "GET",
+        headers: {
+          "Content-Type": "application/json",
+          authorization: `Bearer ${thunkAPI.getState().user.user.token}`,
+        },
+      });
+      if (!response.ok) {
+        throw await response.json();
+      }
+
+      thunkAPI.dispatch(getAllExpenses());
+
+      const data = await response.json();
+      return data;
+    } catch (error) {
+      return thunkAPI.rejectWithValue(error);
     }
-
-    thunkAPI.dispatch(getAllExpenses());
-
-    const data = await response.json();
-    return data;
-  } catch (error) {
-    return thunkAPI.rejectWithValue(error);
   }
-});
+);
 
 const expenseSlice = createSlice({
   name: "expense",
@@ -181,6 +202,9 @@ const expenseSlice = createSlice({
     },
     setEditMode: (state, { payload }) => {
       return { ...state, isEditing: true, ...payload };
+    },
+    clearFilters: () => {
+      return { ...initialFilterState };
     },
   },
   extraReducers: (builder) => {
@@ -250,6 +274,7 @@ const expenseSlice = createSlice({
   },
 });
 
-export const { clearHandler, changeHandler, setEditMode, calcExpense } = expenseSlice.actions;
+export const { clearHandler, changeHandler, setEditMode, clearFilters } =
+  expenseSlice.actions;
 
 export default expenseSlice.reducer;

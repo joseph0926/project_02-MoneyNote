@@ -13,10 +13,10 @@ export const getAllExpense = async (req, res) => {
     createdBy: userId,
   };
 
-  if (status !== "all") {
+  if (status && status !== "all") {
     queryObj.status = status;
   }
-  if (expensesType !== "all") {
+  if (expensesType && expensesType !== "all") {
     queryObj.expensesType = expensesType;
   }
   if (search) {

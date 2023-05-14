@@ -3,7 +3,13 @@ import { useDispatch, useSelector } from "react-redux";
 
 import InputHelper from "../Helpers/InputHelper";
 import InputSelectorHelper from "../Helpers/InputSelectorHelper";
-import { changeHandler, clearHandler, createExpense, getAllExpenses, updateExpense } from "../../store/money/expense-slice";
+import {
+  changeHandler,
+  clearHandler,
+  createExpense,
+  getAllExpenses,
+  updateExpense,
+} from "../../store/money/expense-slice";
 
 import styled from "styled-components";
 
@@ -51,7 +57,9 @@ const AddExpense = () => {
       return;
     }
 
-    dispatchFn(createExpense({ title, description, status, expensesType, expenseAmount }));
+    dispatchFn(
+      createExpense({ title, description, status, expensesType, expenseAmount })
+    );
   };
 
   return (
@@ -60,11 +68,34 @@ const AddExpense = () => {
         <h3>{isEditing ? "edit expense" : "add expense"}</h3>
 
         <div className="form-center">
-          <InputHelper type="text" name="title" labelText="지출내용" value={title} handleChange={inputHandler} />
-          <InputHelper type="text" name="description" labelText="지출설명" value={description} handleChange={inputHandler} />
-          <InputHelper type="number" name="expenseAmount" labelText="지출금액" value={expenseAmount} handleChange={inputHandler} />
+          <InputHelper
+            type="text"
+            name="title"
+            labelText="지출내용"
+            value={title}
+            handleChange={inputHandler}
+          />
+          <InputHelper
+            type="text"
+            name="description"
+            labelText="지출설명"
+            value={description}
+            handleChange={inputHandler}
+          />
+          <InputHelper
+            type="number"
+            name="expenseAmount"
+            labelText="지출금액"
+            value={expenseAmount}
+            handleChange={inputHandler}
+          />
 
-          <InputSelectorHelper name="status" value={status} handleChange={inputHandler} list={statusOptions} />
+          <InputSelectorHelper
+            name="status"
+            value={status}
+            handleChange={inputHandler}
+            list={statusOptions}
+          />
 
           <InputSelectorHelper
             name="expensesType"
@@ -75,10 +106,18 @@ const AddExpense = () => {
           />
 
           <div className="btn-container">
-            <button type="button" className="btn btn-block clear-btn" onClick={clear}>
+            <button
+              type="button"
+              className="btn btn-block clear-btn"
+              onClick={clear}
+            >
               clear
             </button>
-            <button type="submit" className="btn btn-block submit-btn" disabled={isLoading}>
+            <button
+              type="submit"
+              className="btn btn-block submit-btn"
+              disabled={isLoading}
+            >
               submit
             </button>
           </div>
@@ -95,7 +134,7 @@ const Wrapper = styled.section`
   padding: 0rem 2rem 4rem;
   h3 {
     text-transform: capitalize;
-    margin-top: -1rem;
+    margin-top: 1rem;
     margin-bottom: 2rem;
     font-size: 2rem;
   }

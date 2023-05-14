@@ -26,8 +26,8 @@ const App = () => {
         {
           path: "money",
           element: <MoneyPage />,
-          children: [{ path: "add-money", element: <AddMoneyPage /> }],
         },
+        { path: "money/add-money", element: <AddMoneyPage /> },
       ],
     },
     { path: "/auth", element: <AuthPage /> },
