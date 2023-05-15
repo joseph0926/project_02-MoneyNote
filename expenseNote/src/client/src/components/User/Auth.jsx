@@ -32,7 +32,9 @@ const Auth = () => {
           </button>
         </div>
       </div>
-      <div className={`${formBoxActvie ? "sign-formBox active" : "sign-formBox"}`}>
+      <div
+        className={`${formBoxActvie ? "sign-formBox active" : "sign-formBox"}`}
+      >
         <AuthForm isSign={isSign} />
       </div>
     </Wrapper>
