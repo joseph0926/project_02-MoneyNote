@@ -26,7 +26,8 @@
 
 ### 사용 예시
 
-- 이미지 또는 gif 추가 예정,,,
+2. ![expenseNote-sign](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/d58b13ce-3be8-4571-b74c-cea08ed92c93)
+
 
 ### 페이지 구성
 
