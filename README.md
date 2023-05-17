@@ -26,7 +26,9 @@
 
 ### 사용 예시
 
-2. ![expenseNote-sign](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/d58b13ce-3be8-4571-b74c-cea08ed92c93)
+![expenseNote-sign](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/d58b13ce-3be8-4571-b74c-cea08ed92c93)
+![expenseNote-all](https://github.com/joseph0926/project_02-MoneyNote/assets/100750188/6ac7b460-f69e-481f-a348-a3f9ba8b0748)
+
 
 
 ### 페이지 구성
